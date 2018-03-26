@@ -1,0 +1,11 @@
+{
+    "result": {
+        "item": "subterranean_creatures_mod:wraith_sword"
+    },
+    "pattern": [
+        " A ",
+        "ABA",
+        " C "
+    ],
+    "type": "forge:ore_shaped","key": {"A": {"item": "minecraft:iron_ingot"},"B": {"item": "subterranean_creatures_mod:life_drain_crystal"},"C": {"item": "minecraft:stick"}}
+}

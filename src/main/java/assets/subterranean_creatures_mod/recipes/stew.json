@@ -1,0 +1,12 @@
+
+{
+    "result": {
+        "item": "minecraft:mushroom_stew"
+    },
+    "pattern": [
+        "AB ",
+        "B  ",
+        "   "
+    ],
+    "type": "forge:ore_shaped","key": {"A": {"item": "minecraft:bowl"},"B": {"item": "subterranean_creatures_mod:glow_shroom_blue"}}
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "side": "subterranean_creatures_mod:blocks/glow_shroom_block_skin_stem",
+        "end": "subterranean_creatures_mod:blocks/glow_shroom_block_inside"
+    }
+}

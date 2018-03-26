@@ -1,0 +1,17 @@
+item.fire_staff.name=Fire Staff
+item.flail_snail_shell_boots.name=Flail Snail Shell Boots
+item.flail_snail_shell_chestplate.name=Flail Snail Shell Chestplate
+item.flail_snail_shell_helmet.name=Flail Snail Shell Helmet
+item.flail_snail_shell_leggings.name=Slail Snail Shell Leggings
+item.life_drain_crystal.name=Life Drain Crystal
+item.trans_dimensional_orb.name=Trans Dimensional Orb
+item.wraith_sword.name=Wraith Sword
+item.fire_toad_gland.name=Fire_Toad Gland
+item.flail_shell_fragment.name=Flail Shell Fragment
+item.essence_of_life_drain.name=Essence Of Life Drain
+
+
+tile.simie_cobblestone.name=Simie Cobblestone
+entity.fire_toad.name=Fire Toad
+entity.flail_snail.name=Flail Snail
+entity.wrath.name=Wraith

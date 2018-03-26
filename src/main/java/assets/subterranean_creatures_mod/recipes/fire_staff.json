@@ -1,0 +1,11 @@
+{
+    "result": {
+        "item": "subterranean_creatures_mod:fire_staff"
+    },
+    "pattern": [
+        "  A",
+        "CBC",
+        "A  "
+    ],
+    "type": "forge:ore_shaped","key": {"A": {"item": "minecraft:stick"},"B": {"item": "subterranean_creatures_mod:fire_toad_gland"},"C": {"item": "minecraft:gold_ingot"}}
+}

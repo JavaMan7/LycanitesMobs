@@ -1,0 +1,11 @@
+{
+    "result": {
+        "item": "subterranean_creatures_mod:trans_dimensional_orb"
+    },
+    "pattern": [
+        "BBB",
+        "BAB",
+        "BBB"
+    ],
+    "type": "forge:ore_shaped","key": {"A": {"item": "minecraft:ender_pearl"},"B": {"item": "subterranean_creatures_mod:essence_of_life_drain"}}
+}

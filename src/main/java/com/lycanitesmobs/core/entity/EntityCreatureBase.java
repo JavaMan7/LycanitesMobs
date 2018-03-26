@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.javaman.subteranean.projectiles.EntityFireShot;
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.api.IGroupBoss;
 import com.lycanitesmobs.api.IGroupHeavy;
@@ -29,6 +30,7 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.IMob;
@@ -37,6 +39,7 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -3074,19 +3077,39 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	this.destroyArea(x, y, z, strength, drop, range, null, 0);
     }
 	public void destroyArea(int x, int y, int z, float strength, boolean drop, int range, EntityPlayer player, int chain) {
+
 		range = Math.max(range -1, 0);
 		for(int w = -((int)Math.ceil(this.width) - range); w <= (Math.ceil(this.width) + range); w++) {
 			for (int d = -((int) Math.ceil(this.width) - range); d <= (Math.ceil(this.width) + range); d++) {
 				for (int h = 0; h <= Math.ceil(this.height); h++) {
+					
 					BlockPos breakPos = new BlockPos(x + w, y + h, z + d);
+					BlockPos breakPos2 = new BlockPos(0,0, 0);
+					BlockPos breakPos3 = new BlockPos(0,59, 0);
+					IBlockState a =world.getBlockState(breakPos3);
+					IBlockState b =world.getBlockState(breakPos2);
+					
 					IBlockState blockState = this.getEntityWorld().getBlockState(breakPos);
-					float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
+					if ((int) (Math.random() * 10) <= 100 && blockState.getBlock() != Blocks.AIR)
+					{
+					world.setBlockState(new BlockPos(1,0,0), b);
+					EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, this.getPosition().getX()+ Math.random() * 10,this.getPosition().getY()+ Math.random() * 10, this.getPosition().getZ()+ Math.random() * 10,blockState);
+					entityfallingblock.motionX=.5;
+					entityfallingblock.motionY=.5;
+					entityfallingblock.motionZ=.5;
+					world.spawnEntity(entityfallingblock);
+					
+					}
+					
+					
+				float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
 					Material material = blockState.getMaterial();
 					if (hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA) {
 						// If a player is set this is from a spawner in which case don't destroy the central block.
 						if(player == null || !(w == 0 && h == 0 && d == 0)) {
 							SpawnerEventListener.getInstance().onBlockBreak(this.getEntityWorld(), breakPos, blockState, player, chain);
 							this.getEntityWorld().destroyBlock(breakPos, drop);
+							
 						}
 					}
 				}

@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "subterranean_creatures_mod:blocks/glow_shroom_blue"
+    }
+}

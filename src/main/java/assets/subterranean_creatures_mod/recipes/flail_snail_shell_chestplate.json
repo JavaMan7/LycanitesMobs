@@ -1,0 +1,11 @@
+{
+    "result": {
+        "item": "subterranean_creatures_mod:flail_snail_shell_chestplate"
+    },
+    "pattern": [
+        "A A",
+        "AAA",
+        "AAA"
+    ],
+    "type": "forge:ore_shaped","key": {"A": {"item": "subterranean_creatures_mod:flail_shell_fragment"}}
+}

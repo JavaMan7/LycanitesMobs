@@ -413,6 +413,6 @@ public class MobSpawn {
 		if(this.creatureInfo != null) {
 			return this.creatureInfo.getName();
 		}
-		return this.entityClass.toString();
+		return "t";//this.entityClass.toString();
 	}
 }
