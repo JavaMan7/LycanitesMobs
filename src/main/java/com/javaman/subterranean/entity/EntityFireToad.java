@@ -1,6 +1,7 @@
 package com.javaman.subterranean.entity;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
@@ -14,6 +15,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIZombieAttack;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
@@ -21,12 +23,16 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -101,12 +107,13 @@ public class EntityFireToad extends EntityMob   {
           */
          public void updateTask()
          {
-             EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
-             double d0 = 64.0D;
+             EntityLivingBase target = this.parentEntity.getAttackTarget();
+            // double d0 = 64.0D;
              try {
-             if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(entitylivingbase))
+             if (target.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(target))
              {
-                 World world = this.parentEntity.world;
+            	 
+            	 World world = this.parentEntity.world;
                  ++this.attackTimer;
 
                  if (this.attackTimer == 10)
@@ -115,30 +122,43 @@ public class EntityFireToad extends EntityMob   {
                  }
 
                  if (this.attackTimer == 20)
-                 {
-                     double d1 = 4.0D;
-                     Vec3d vec3d = this.parentEntity.getLook(1.0F);
-                     double d2 = entitylivingbase.posX - (this.parentEntity.posX + vec3d.x * 4.0D);
-                     double d3 = entitylivingbase.getEntityBoundingBox().minY + (double)(entitylivingbase.height / 2.0F) - (0.5D + this.parentEntity.posY + (double)(this.parentEntity.height / 2.0F));
-                     double d4 = entitylivingbase.posZ - (this.parentEntity.posZ + vec3d.z * 4.0D);
-                     //world.playEvent((EntityPlayer)null, 1016, new BlockPos(this.parentEntity), 0);
-                     
-                     //BlockPos breakPos = new BlockPos(this.parentEntity.getPosition().getX(),this.parentEntity.getPosition().getY()-1, this.parentEntity.getPosition().getZ());
-                     BlockPos breakPos = new BlockPos(0,0, 0);
-         			IBlockState blockState = this.parentEntity.getEntityWorld().getBlockState(breakPos);
-         			
-         			
-         			world.setBlockState(new BlockPos(1,0,0), blockState);
-         			EntityFallingBlock  entitylargefireball = new EntityFallingBlock(world, d2, d3, d4,blockState);
-         			
-         			
-         			
-                     entitylargefireball.posX = this.parentEntity.posX + vec3d.x * 4.0D;
-                     entitylargefireball.posY = this.parentEntity.posY + (double)(this.parentEntity.height / 2.0F) + 0.5D;
-                     entitylargefireball.posZ = this.parentEntity.posZ + vec3d.z * 4.0D;
-                     world.spawnEntity(entitylargefireball);
-                     this.attackTimer = -40;
-                 }
+                {
+            	 Entity entityplayer = this.parentEntity;
+            	 
+            	
+         		
+         		//this.parentEntity.world.setBlockState(new BlockPos(entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d), b);
+         		
+         		
+         		 //EntityTNTPrimed entityfallingblock = new EntityTNTPrimed(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d,null);
+         		 //EntityCow entityfallingblock = new EntityCow(world);
+         		
+        		
+        		
+         		BlockPos breakPos =new BlockPos(entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
+        		IBlockState b = Blocks.STONE.getDefaultState();
+        		world.setBlockState(breakPos, b);
+        		
+        		EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(), b );
+         		 //EntityFireShot entityfallingblock = new EntityFireShot(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
+         		
+         		this.parentEntity.world.spawnEntity(entityfallingblock);
+            	 
+            	
+            	 EntityTNTPrimed entityarrow = new EntityTNTPrimed(this.parentEntity.world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d,null);
+            	 //EntityTippedArrow entityarrow = new EntityTippedArrow(this.parentEntity.world, this.parentEntity);
+                 double d0 = target.posX - this.parentEntity.posX;
+                 double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
+                 double d2 = target.posZ - this.parentEntity.posZ;
+                 double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+                 //entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 0);
+                 shoot(d0, d1, d2, 3f,entityfallingblock);
+                 //this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / ( 0.4F + 0.8F));
+                 this.parentEntity.world.spawnEntity(entityfallingblock);
+               
+                 if(target.getCollisionBoundingBox().contains(entityfallingblock.getPositionVector()))target.attackEntityFrom(DamageSource.IN_WALL, 3f);
+                 
+                }
              }
              else if (this.attackTimer > 0)
              {
@@ -153,13 +173,32 @@ public class EntityFireToad extends EntityMob   {
      }
 
 
-
+	
 
 	public int getFireballStrength() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	 private static  void shoot(double x, double y, double z, float velocity,Entity e)
+	    {
+	        float f = MathHelper.sqrt(x * x + y * y + z * z);
+	        x = x / (double)f;
+	        y = y / (double)f;
+	        z = z / (double)f;
+	       
+	        x = x * (double)velocity;
+	        y = y * (double)velocity;
+	        z = z * (double)velocity;
+	        e.motionX = x;
+	        e.motionY = y;
+	        e.motionZ = z;
+	        float f1 = MathHelper.sqrt(x * x + z * z);
+	       e.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
+	        e.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
+	        e.prevRotationYaw = e.rotationYaw;
+	        e.prevRotationPitch = e.rotationPitch;
+	       // e.ticksInGround = 0;
+	    }
 	
 	 
 	

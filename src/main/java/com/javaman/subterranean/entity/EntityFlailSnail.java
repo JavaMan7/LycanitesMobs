@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -24,15 +25,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityFlailSnail extends EntityZombie //implements IRangedAttackMob 
 {
 
+	private int attackTimer;
 	public EntityFlailSnail(World worldIn) {
 		super(worldIn);
 		setSize(2.0f, 2.0f);
@@ -77,27 +83,107 @@ public class EntityFlailSnail extends EntityZombie //implements IRangedAttackMob
 	    {
 	        boolean flag = super.attackEntityAsMob(entityIn);
 
-	       
-	        BlockPos breakPos = new BlockPos(this.getPosition().getX(),this.getPosition().getY()-1, this.getPosition().getZ());
-			BlockPos breakPos2 = new BlockPos(0,0, 0);
-			BlockPos breakPos3 = new BlockPos(0,59, 0);
-			IBlockState a =world.getBlockState(breakPos3);
-			IBlockState b =world.getBlockState(breakPos2);
+	        
+           
+           //  if(entityIn.getCollisionBoundingBox().contains(entityfallingblock.getPositionVector()))entityIn.attackEntityFrom(DamageSource.IN_WALL, 3f);
+             
 			
-			IBlockState blockState = this.getEntityWorld().getBlockState(breakPos);
-			if ((int) (Math.random() * 10) <= 100 && blockState.getBlock() != Blocks.AIR)
-			{
-			world.setBlockState(new BlockPos(1,0,0), blockState);
-			EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, this.getPosition().getX(),this.getPosition().getY()+5, this.getPosition().getZ(),blockState);
-			entityfallingblock.motionX=.5;
-			entityfallingblock.motionY=.5;
-			entityfallingblock.motionZ=.5;
-			world.spawnEntity(entityfallingblock);
 			
-			}
 
 	        return flag;
 	    }
-	
+	    private static  void shoot(double x, double y, double z, float velocity,Entity e)
+	    {
+	        float f = MathHelper.sqrt(x * x + y * y + z * z);
+	        x = x / (double)f;
+	        y = y / (double)f;
+	        z = z / (double)f;
+	       
+	        x = x * (double)velocity;
+	        y = y * (double)velocity;
+	        z = z * (double)velocity;
+	        e.motionX = x;
+	        e.motionY = y;
+	        e.motionZ = z;
+	        float f1 = MathHelper.sqrt(x * x + z * z);
+	       e.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
+	        e.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
+	        e.prevRotationYaw = e.rotationYaw;
+	        e.prevRotationPitch = e.rotationPitch;
+	       // e.ticksInGround = 0;
+	    }
+	    public void onLivingUpdate() {
+	    
+	    ++this.attackTimer;
+
+	     try {
+	    	 EntityLivingBase target = this.getAttackTarget();
+	    	  if (this.attackTimer == 20&& target != null)
+              {
+	    	BlockPos breakPos =new BlockPos(this.getPosition().getX()+ 0.5d,this.getPosition().getY()+ 0.5d, this.getPosition().getZ()+ 0.5d);
+    		IBlockState b = Blocks.STONE.getDefaultState();
+    		world.setBlockState(breakPos, b);
+    		
+    		EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(), b );
+     		 //EntityFireShot entityfallingblock = new EntityFireShot(world, this.getPosition().getX()+ 0.5d,this.getPosition().getY()+ 0.5d, this.getPosition().getZ()+ 0.5d);
+     		
+     		
+     		
+     		 
+        	// EntityTNTPrimed entityarrow = new EntityTNTPrimed(this.world, this.getPosition().getX()+ 0.5d,this.getPosition().getY()+ 0.5d, this.getPosition().getZ()+ 0.5d,null);
+        	 //EntityTippedArrow entityarrow = new EntityTippedArrow(this.world, this.parentEntity);
+    		int power = 1;
+    		float yaw = this.getRotatedYaw(Rotation.CLOCKWISE_90);
+    		float pitch = this.getPitchYaw().x;
+    		double v1 = Math.sin(yaw*(Math.PI/180))*power;
+    		double v2 = Math.cos(yaw*(Math.PI/180))*power;
+    		double v3 =.5;//Math.sin(pitch*(Math.PI/180)*-1)*power;
+    		entityfallingblock.motionX=v2;
+    		entityfallingblock.motionY=v3;
+    		entityfallingblock.motionZ=v1;
+             this.world.spawnEntity(entityfallingblock);
+             //world.setBlockState(breakPos,  Blocks.AIR.getDefaultState());
+              } else if (this.attackTimer > 20)
+              {
+                  this.attackTimer = 0;
+              }
+	    }catch (NullPointerException e) {
+            System.out.print("Caught the NullPointerException");
+	    }
+	        if (this.world.isDaytime() && !this.world.isRemote && !this.isChild() && this.shouldBurnInDay())
+	        {
+	            float f = this.getBrightness();
+
+	            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ)))
+	            {
+	                boolean flag = true;
+	                ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+	                if (!itemstack.isEmpty())
+	                {
+	                    if (itemstack.isItemStackDamageable())
+	                    {
+	                        itemstack.setItemDamage(itemstack.getItemDamage() + this.rand.nextInt(2));
+
+	                        if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
+	                        {
+	                            this.renderBrokenItemStack(itemstack);
+	                            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStack.EMPTY);
+	                        }
+	                    }
+
+	                    flag = false;
+	                }
+
+	                if (flag)
+	                {
+	                    this.setFire(8);
+	                }
+	            }
+	        }
+
+	        super.onLivingUpdate();
+	    }
+
 
 }
