@@ -10,6 +10,7 @@ import com.javaman.subteranean.projectiles.EntityFireShot;
 import com.javaman.subterranean.SubterraneanCreaturesMod;
 import com.javaman.subterranean.biomes.BiomeRegistry;
 import com.javaman.subterranean.blocks.ModBlocks;
+import com.javaman.subterranean.blocks.Slime;
 import com.javaman.subterranean.entity.EntityFlailSnail;
 
 import net.minecraft.block.Block;
@@ -25,11 +26,16 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Register {
+	
+	
+	
 	@SubscribeEvent
 	public void registerBlocks(RegistryEvent.Register<Block> event) {
 		

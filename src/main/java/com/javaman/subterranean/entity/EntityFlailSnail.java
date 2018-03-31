@@ -1,5 +1,7 @@
 package com.javaman.subterranean.entity;
 
+import com.javaman.subterranean.blocks.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,6 +31,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -118,10 +121,49 @@ public class EntityFlailSnail extends EntityZombie //implements IRangedAttackMob
     ++this.attackTimer;
 
 	     try {
-	    	 EntityLivingBase target = this.getAttackTarget();
+	    	 
+	    	 Entity entityplayer = this;
+	    	 Entity target = this.getAttackTarget();
 	    	  if (this.attackTimer == 20&& target != null)
               {
-	    		//efor(int i=0 ;i<3;i++)  {
+	    		  
+	    		  EnumFacing f	= entityplayer.getHorizontalFacing();
+	    			f.getFrontOffsetX();
+	    			
+	    			for(int i =0; i<10;i++)	{
+	    				BlockPos breakPos =new BlockPos(entityplayer.getPosition().getX()+ 0.5d+f.getFrontOffsetX()+(i*.5),entityplayer.getPosition().getY()+ 0.5d-1+f.getFrontOffsetY(), entityplayer.getPosition().getZ()+ 0.5d+f.getFrontOffsetZ());
+	    				IBlockState b = world.getBlockState(breakPos);//Blocks.STONE.getDefaultState();
+	    	    		Block bl = b.getBlock();
+	    	    		IBlockState iB = ModBlocks.lapisCobblestone.getDefaultState();//bl.getDefaultState();
+	    	    		breakPos=breakPos.add(0, 5, 0);
+	    				
+	    				world.setBlockState(breakPos, iB);
+	    				
+	    			EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(),  iB );
+	    				 //EntityTNTPrimed entityfallingblock = new EntityTNTPrimed(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d,null);
+	    				 //EntityCow entityfallingblock = new EntityCow(world);
+	    				  
+	    				 
+	    				// EntityFireShot entityfallingblock = new EntityFireShot(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
+	    				
+	    				
+	    				System.out.println(entityplayer.getRotatedYaw(Rotation.NONE));
+	    				int power = 2;
+	    				float yaw = entityplayer.getRotatedYaw(Rotation.CLOCKWISE_90);
+	    				float pitch = entityplayer.getPitchYaw().x;
+	    				
+	    				double v1 = Math.sin((yaw+(i*15))*(Math.PI/180))*power;
+	    				double v2 = Math.cos((yaw+(i*15))*(Math.PI/180))*power;
+	    				double v3 =Math.sin(pitch*(Math.PI/180)*-1)*power;
+	    				if(this.getDistance(target)<= 1000) {
+	    				entityfallingblock.motionX=v2;
+	    				entityfallingblock.motionY=v3;
+	    				entityfallingblock.motionZ=v1;
+	    				//target.addVelocity(v2, v3, v1);
+	    				}
+	    				world.spawnEntity(entityfallingblock);
+	    			}
+	    		/*efor(int i=0 ;i<3;i++)  {
 	    		  float yaw = this.getRotatedYaw(Rotation.CLOCKWISE_90);
 	    		 float yaw2 = this.getRotatedYaw(Rotation.NONE);
 	      		float pitch = this.getPitchYaw().x; 
@@ -137,9 +179,9 @@ public class EntityFlailSnail extends EntityZombie //implements IRangedAttackMob
     		IBlockState iB = bl.getDefaultState();
     		this.getDistanceSq(target);
     		world.setBlockState(breakPos, Blocks.AIR.getDefaultState());
-    		System.out.println(breakPos.getY());
+    		//System.out.println(breakPos.getY());
     		breakPos=breakPos.add(0, 1, 0);
-    		System.out.println(breakPos.getY());
+    		//System.out.println(breakPos.getY());
     		world.setBlockState(breakPos, iB);
     		
     		EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(), iB );
@@ -158,15 +200,15 @@ public class EntityFlailSnail extends EntityZombie //implements IRangedAttackMob
     		entityfallingblock.motionX=v2;
     		entityfallingblock.motionY=v3;
     		entityfallingblock.motionZ=v1;
-    		System.out.println(target);
+    		//System.out.println(target);
     		if(this.getDistance(target)<= 5) {
-    			System.out.println(target);
+    			//System.out.println(target);
     		target.motionX = target.motionX + v2;
     		target.motionY = target.motionY + v3;
     		target.motionZ = target.motionZ + v1;
     		}
              this.world.spawnEntity(entityfallingblock);
-             //world.setBlockState(breakPos,  Blocks.AIR.getDefaultState());
+             //world.setBlockState(breakPos,  Blocks.AIR.getDefaultState());*/
 	    		//}
               } else if (this.attackTimer > 20)
               {

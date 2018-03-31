@@ -85,7 +85,7 @@ public class TransDimensionalOrb  extends  Item{
 					//world.getMinecraftServer().getPlayerList().transferEntityToWorld((Entity)player, 0, player.getServer().getWorld(0), worldserver1);
 					//world.getMinecraftServer().getPlayerList().transferEntityToWorld((Entity)player, 0, player.getServer().getWorld(0), worldserver1,new DimensionTeleporter(worldserver1,player));
 				
-					com.javaman.subterranean.dimension.CustomTeleporter.teleportToDimension(thePlayer, DimensionRegister.dimensionId, 0, 100, 0);
+					com.javaman.subterranean.dimension.CustomTeleporter.teleportToDimension(thePlayer,DimensionRegister.dimensionId , 0, 100, 0);
 					
 					
 				} catch (Exception e) {

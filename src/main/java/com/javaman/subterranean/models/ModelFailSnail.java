@@ -1,4 +1,5 @@
-package com.javaman.subterranean.models;
+
+ package com.javaman.subterranean.models;
 
 //Date: 2015-03-06 11:21:44 PM
 //Template version 1.1
@@ -174,5 +175,4 @@ public void setRotationAngles(float f, float f1, float f2, float f3, float f4, f
 {
  super.setRotationAngles(f, f1, f2, f3, f4, f5,entity);
 }
-
 }

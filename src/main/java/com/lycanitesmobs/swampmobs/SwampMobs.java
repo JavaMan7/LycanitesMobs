@@ -5,6 +5,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.item.ItemCustomFood;
@@ -67,6 +68,7 @@ public class SwampMobs extends Submod {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		//CreatureManager.getInstance().loadAllFromJSON(groupInfo);
 		super.postInit(event);
 	}
 

@@ -3,6 +3,7 @@ package com.lycanitesmobs.swampmobs;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.renderer.RenderRegister;
 import com.lycanitesmobs.swampmobs.model.*;
+import com.javaman.subterranean.models.ModelFailSnail;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.swampmobs.model.*;
 
@@ -20,8 +21,8 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("aspid", new ModelAspid());
 		AssetManager.addModel("triffid", new ModelTriffid());
 		AssetManager.addModel("remobra", new ModelRemobra());
-
-        // Register Renderers:
+	//	AssetManager.addModel("flail_snail", new ModelFailSnail());
+        //Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);
         renderRegister.registerRenderFactories();
 	}

@@ -9,6 +9,7 @@ import com.google.common.base.Predicates;
 import com.javaman.subteranean.projectiles.EntityFireShot;
 //import com.javaman.subteranean.projectiles.EntityFireShot;
 import com.javaman.subterranean.SubterraneanCreaturesMod;
+import com.javaman.subterranean.blocks.ModBlocks;
 import com.javaman.subterranean.client.renderer.entity.EntityRenderRegister;
 
 import net.minecraft.block.Block;
@@ -81,7 +82,7 @@ public class FireStaff  extends  Item{
 
 	// IMPORTANT! Only spawn new entities on the server. If the world is not remote,
 	// that means you are on the server:
-		 Entity entity = this.mc .getRenderViewEntity();
+	/*	 Entity entity = this.mc .getRenderViewEntity();
 
 	        if (entity != null)
 	        {
@@ -185,30 +186,37 @@ public class FireStaff  extends  Item{
 
 	                Minecraft.getMinecraft().mcProfiler.endSection();
 	            }
-	        }
+	        }*/
 	    
 	if (!world.isRemote) {
-		BlockPos breakPos =new BlockPos(entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
-		IBlockState b = Blocks.STONE.getDefaultState();
+	EnumFacing f	= entityplayer.getHorizontalFacing();
+	f.getFrontOffsetX();
+	
+	for(int i =0; i<10;i++)	{
+		BlockPos breakPos =new BlockPos(entityplayer.getPosition().getX()+ 0.5d+f.getFrontOffsetX()+(i*.5),entityplayer.getPosition().getY()+ 0.5d+f.getFrontOffsetY(), entityplayer.getPosition().getZ()+ 0.5d+f.getFrontOffsetZ());
+		IBlockState b = ModBlocks.lapisCobblestone.getDefaultState();
 		world.setBlockState(breakPos, b);
 		
-		EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(), b );
+	EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, breakPos.getX(),breakPos.getY(), breakPos.getZ(), b );
 		 //EntityTNTPrimed entityfallingblock = new EntityTNTPrimed(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d,null);
 		 //EntityCow entityfallingblock = new EntityCow(world);
 		  
 		 
-		 //EntityFireShot entityfallingblock = new EntityFireShot(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
-		System.out.println(entityplayer.getRotatedYaw(Rotation.NONE));
+		// EntityFireShot entityfallingblock = new EntityFireShot(world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d);
+		
+		
+		//System.out.println(entityplayer.getRotatedYaw(Rotation.NONE));
 		int power = 2;
 		float yaw = entityplayer.getRotatedYaw(Rotation.CLOCKWISE_90);
 		float pitch = entityplayer.getPitchYaw().x;
-		double v1 = Math.sin(yaw*(Math.PI/180))*power;
-		double v2 = Math.cos(yaw*(Math.PI/180))*power;
+		double v1 = Math.sin((yaw+(i*15))*(Math.PI/180))*power;
+		double v2 = Math.cos((yaw+(i*15))*(Math.PI/180))*power;
 		double v3 =Math.sin(pitch*(Math.PI/180)*-1)*power;
 		entityfallingblock.motionX=v2;
 		entityfallingblock.motionY=v3;
 		entityfallingblock.motionZ=v1;
 		world.spawnEntity(entityfallingblock);
+	}
 			
 		//world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), 0.0, 0.0,0.01 , 100); //make fier stot
 		//EntityFireShot entityFireShot = new EntityFireShot(world, entityplayer);
@@ -219,23 +227,23 @@ public class FireStaff  extends  Item{
 		//EntityRenderer t = new  EntityRenderer(null, resourceManagerIn);
 		//t.getMouseOver(0);
 		
-		//Entity target =   Minecraft.getMinecraft().pointedEntity;
+	//	Entity target =   Minecraft.getMinecraft().pointedEntity;
 		
 		//EntityLivingBase l= (EntityLivingBase) target;
 		//System.out.println(l);
 		//System.out.println(l.getHealth());
        
-		/*double d0 = entityplayer.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-		EntityFallingBlock entityarrow = new EntityFallingBlock(entityplayer.world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d, Blocks.STONE.getDefaultState() );
-		//EntityArrow entityarrow = new EntityTippedArrow(world, entityplayer);
-       // double d0 = target.posX - entityplayer.posX;
-       // double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 2.0F) - entityarrow.posY;
-       // double d2 = target.posZ - entityplayer.posZ;
-       // double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
-        //entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 0);
-        //entityarrow.shoot(d0, d1, d2, 3f, 0);
-        *///this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / ( 0.4F + 0.8F));
-       // world.spawnEntity(entityarrow);
+		//double d0 = entityplayer.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		//EntityFallingBlock entityarrow = new EntityFallingBlock(entityplayer.world, entityplayer.getPosition().getX()+ 0.5d,entityplayer.getPosition().getY()+ 0.5d, entityplayer.getPosition().getZ()+ 0.5d, Blocks.STONE.getDefaultState() );
+	//	EntityArrow entityarrow = new EntityTippedArrow(world, entityplayer);
+    //    double d0 = target.posX - entityplayer.posX;
+    //    double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 2.0F) - entityarrow.posY;
+    ///   double d2 = target.posZ - entityplayer.posZ;
+     //   double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+      //  entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 0);
+        //entityarrow.shoot(d0, d1, d2, 100000f, 0);
+       // this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / ( 0.4F + 0.8F));
+      //  world.spawnEntity(entityarrow);
 		
 		
 	}

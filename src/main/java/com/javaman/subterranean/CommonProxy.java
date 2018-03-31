@@ -5,10 +5,16 @@ import com.javaman.subterranean.WorldGen.ModWorldGenerator;
 import com.javaman.subterranean.WorldGen.SubWorldGen;
 import com.javaman.subterranean.biomes.BiomeRegistry;
 import com.javaman.subterranean.blocks.ModBlocks;
+import com.javaman.subterranean.blocks.Slime;
 import com.javaman.subterranean.dimension.DimensionRegister;
+import com.javaman.subterranean.entity.EntityFlailSnail;
 import com.javaman.subterranean.entity.ModEntitys;
 import com.javaman.subterranean.loottable.LootRegister;
+import com.javaman.subterranean.models.ModelFailSnail;
 import com.javaman.subtersnean.register.Register;
+import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.swampmobs.model.ModelAglebemu;
 
 import net.minecraftforge.client.model.obj.OBJLoader;
 
@@ -21,6 +27,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 //import com.javaman.subterranean.entity.ModEntitys;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -30,6 +37,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CommonProxy {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
+		FluidRegistry.registerFluid(Slime.fluid);
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 0);
 		ModBlocks.addItem();
 
@@ -42,6 +50,7 @@ public class CommonProxy {
 		ModEntitys.mainRegistry();
 		LootRegister.mainRegister();
 		//MakeProjectile.registerEntity();
+		
 		MinecraftForge.EVENT_BUS.register(new Register());
 		
 		
@@ -58,5 +67,9 @@ public class CommonProxy {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
 
+	}
+	public void registerModels(GroupInfo groupInfo) {
+		// TODO Auto-generated method stub
+		
 	}
 }

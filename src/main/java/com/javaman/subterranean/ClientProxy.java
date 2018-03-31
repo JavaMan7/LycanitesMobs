@@ -2,6 +2,19 @@ package com.javaman.subterranean;
 
 import com.javaman.subteranean.client.render.items.ItemRenderRegister;
 import com.javaman.subterranean.client.renderer.entity.EntityRenderRegister;
+import com.javaman.subterranean.models.ModelFailSnail;
+import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.renderer.RenderRegister;
+import com.lycanitesmobs.swampmobs.model.ModelAglebemu;
+import com.lycanitesmobs.swampmobs.model.ModelAspid;
+import com.lycanitesmobs.swampmobs.model.ModelDweller;
+import com.lycanitesmobs.swampmobs.model.ModelEttin;
+import com.lycanitesmobs.swampmobs.model.ModelEyewig;
+import com.lycanitesmobs.swampmobs.model.ModelGhoulZombie;
+import com.lycanitesmobs.swampmobs.model.ModelLurker;
+import com.lycanitesmobs.swampmobs.model.ModelRemobra;
+import com.lycanitesmobs.swampmobs.model.ModelTriffid;
 
 //import com.javaman.subteranean.client.render.blocks.BlockRenderRegister;
 //import com.javaman.subteranean.client.render.items.ItemRenderRegister;
@@ -25,8 +38,9 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(e);
 		//OBJLoader.INSTANCE.addDomain(SubterraneanCreaturesMod.MODID);
 		EntityRenderRegister.registerEntityRenderer();
+		//AssetManager.addModel("flail_snail", new ModelFailSnail());
 	}
-
+	
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
