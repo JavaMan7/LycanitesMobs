@@ -17,6 +17,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityComparator;
@@ -39,18 +41,16 @@ public class LapisCobblestone extends Block implements ITickable,ITileEntityProv
 		this.setRegistryName(SubterraneanCreaturesMod.MODID+":"+"simie_cobblestone");
 		this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 		this.setTickRandomly(true);
-		
+	
 		  // this.setTickRandomly(true);
 	}
 	
 	
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		NonNullList<ItemStack> ret = NonNullList.create();
-        getDrops(ret, world, pos, state, fortune);
-        return ret;
-	}
-
+	 public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(this);
+    }
 
 	@Override
 	 public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)

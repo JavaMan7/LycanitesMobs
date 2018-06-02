@@ -40,6 +40,7 @@ public class TileEntityLapisCobblestone extends TileEntity implements ITickable
         this.outputSignal = outputSignalIn;
         
     }
+    public long stayTime = 3;
     public long timelast = 0;
 	public long time = 0;
 	public boolean l = true;
@@ -48,28 +49,20 @@ public class TileEntityLapisCobblestone extends TileEntity implements ITickable
 	@Override
 	public void update() {
 		
-		if(slime) {
 			
-			this.getWorld().setBlockState(pos.add(0, 1, 0), Blocks.WATER.getDefaultState());
-			//this.getWorld().setBlockState(pos.add(0, 1, 1), ModBlocks.lapisCobblestone.getDefaultState());
-			//this.getWorld().setBlockState(pos.add(0, 1, 1), Blocks.SNOW.getDefaultState());
-			
-			
-		}
+			this.getWorld().setBlockState(pos.add(0, 0, 0), ModBlocks.lapisCobblestone.getDefaultState());
 		
-		
-		//this.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
-		 //worldIn.scheduleUpdate(pos, this, 10);
-			// worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-			 if(l) {
-				 timelast =	Minecraft.getMinecraft().getSystemTime();
+			
+					
+			if(l) {
+				 timelast =	Minecraft.getMinecraft().getSystemTime()+1000*stayTime;
 				 
 				 l=false;
 			 }else {
 				 
 				 //System.out.println("hi");
 				 time =Minecraft.getMinecraft().getSystemTime();
-				 
+			 }
 				 if(time - timelast >= 0) {
 					 
 					
@@ -77,10 +70,8 @@ public class TileEntityLapisCobblestone extends TileEntity implements ITickable
 					 l=true;
 					 
 				 }
-				 
-				
-				// worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-			 }
+					 
+		
 				
 		
 	}
